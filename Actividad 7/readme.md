@@ -1,3 +1,3 @@
 # Actividad 7
 
-![alt text](imagen1.png)
+![alt text](imagen1.jpg)
