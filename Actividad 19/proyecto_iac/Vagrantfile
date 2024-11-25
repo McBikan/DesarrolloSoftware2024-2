@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Configuración básica de Vagrant
+  config.vm.box = "ubuntu/focal64"
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"
+    vb.cpus = 2
+    vb.gui = false
+  end
+
+  # Configuración de Ansible para ejecutarse desde WSL
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+    ansible.compatibility_mode = "2.0" # Garantiza compatibilidad
+    ansible.raw_ssh_args = ["-o ControlMaster=no"] # Evita problemas de conexiones SSH
+    ansible.extra_vars = {
+      ansible_python_interpreter: "/usr/bin/python3" # Usa Python 3
+    }
+  end
+end
+
