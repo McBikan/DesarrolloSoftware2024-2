@@ -7,6 +7,8 @@
   vars:
     ssh_public_key_path: "{{ lookup('env','HOME') }}/.ssh/dftd.pub"
   tasks:
+    - import_tasks: tasks/pam_pwquality.yml
+    - import_tasks: tasks/user_and_group.yml
     - import_tasks: tasks/authorized_keys.yml
     - import_tasks: tasks/two_factor.yml
   handlers:

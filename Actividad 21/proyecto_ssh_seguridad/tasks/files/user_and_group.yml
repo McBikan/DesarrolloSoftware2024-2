@@ -1,0 +1,31 @@
+---
+- name: Asegurar que el grupo 'desarrolladores' exista
+  group:
+    name: desarrolladores
+    state: present
+
+- name: Crear el usuario 'bender'
+  user:
+    name: bender
+    shell: /bin/bash
+    password: "{{ 'brian' | password_hash('sha512') }}"
+
+- name: Asignar 'bender' al grupo 'desarrolladores'
+  user:
+    name: bender
+    groups: desarrolladores
+    append: yes
+
+- name: Crear un directorio llamado 'ingenieria'
+  file:
+    path: /opt/ingenieria
+    state: directory
+    mode: '0750'
+    group: desarrolladores
+
+- name: Crear un archivo en el directorio de 'ingenieria'
+  file:
+    path: /opt/ingenieria/privado.txt
+    state: touch
+    mode: '0770'
+    group: desarrolladores
