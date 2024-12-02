@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Configuración básica de Vagrant
+  config.vm.box = "ubuntu/focal64"
+  config.vm.network "private_network", ip: "192.168.0.40"
+  
+  # Establecer el tiempo de espera al arrancar la máquina virtual (en segundos)
+  config.vm.boot_timeout = 1200 # 20 minutos
+  
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+    vb.cpus = 4
+    vb.name = "vm_seguridad"
+    #vb.gui = true       # Activar modo gráfico (GUI)
+  end
+
+  # Configuración de Ansible para ejecutarse desde WSL
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "site.yml"
+    ansible.compatibility_mode = "2.0" # Garantiza compatibilidad
+
+
+    #ansible.raw_ssh_args = ["-o ControlMaster=no"] # Evita problemas de conexiones SSH
+    #ansible.extra_vars = {
+      #ansible_python_interpreter: "/usr/bin/python3" # Usa Python 3
+    #}
+  end
+end

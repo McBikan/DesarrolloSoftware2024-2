@@ -1,0 +1,12 @@
+---
+- name: Instalar libpam-pwquality
+  apt:
+    name: libpam-pwquality
+    state: present
+
+- name: Configurar pam_pwquality
+  lineinfile:
+    path: "/etc/pam.d/common-password"
+    regexp: "pam_pwquality.so"
+    line: "password requisite pam_pwquality.so retry=3 minlen=12 lcredit=-1 ucredit=-1 dcredit=-1 ocredit=-1 enforce_for_root"
+    state: present
